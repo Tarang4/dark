@@ -1,21 +1,21 @@
 import 'package:demo_of/ui/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
+  import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get_storage/get_storage.dart';
 
 class ThemeServices {
   final _box = GetStorage();
   final _key = 'isDarkMode';
-  void changeTheme(bool val) => _box.write(_key, val);
 
-  bool isDark() => _box.read(_key) ?? false;
+  _saveThemeToBox(bool val) => _box.write(_key, val);
 
-  ThemeData get theme => isDark() ? Themes.dark : Themes.light;
+  bool _loadThemeFromBox() => _box.read(_key) ?? false;
+
+  ThemeMode get theme => _loadThemeFromBox() ? ThemeMode.dark : ThemeMode.light;
 
   void switchTheme() {
-    Get.changeThemeMode(isDark() ? ThemeMode.light : ThemeMode.dark);
-    changeTheme(!isDark());
+    Get.changeThemeMode(_loadThemeFromBox() ? ThemeMode.light : ThemeMode.dark);
+    _saveThemeToBox(!_loadThemeFromBox());
   }
-
 }
